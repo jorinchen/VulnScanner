@@ -1,0 +1,18 @@
+# 构建产物
+__pycache__/
+*.pyc
+*.pyo
+build_*/
+dist/
+
+# 已构建的可执行文件（使用 build_exe.py 自行生成）
+*.exe
+
+# 运行时生成的扫描报告与历史记录
+reports/
+
+# 编辑器 / 系统
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db

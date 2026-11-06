@@ -1,0 +1,10 @@
+# 运行时（scan_gui.py / scan.py / scan_exe.py / 两个 exe）：仅 Python 3.8+ 标准库
+# （图形界面用标准库 tkinter），无需安装任何第三方包。
+# 以下为可选增强组件（安装后会自动使用）：
+#   nmap：已安装时可用于远端操作系统指纹识别（-O）
+#
+# 仅「打包 exe」时需要 PyInstaller，由 build_exe.py / 生成exe.bat 自动安装：
+#   python -m pip install pyinstaller
+# 运行已生成的 exe 不需要 Python，也不需要本文件。
+
+# python >= 3.8
