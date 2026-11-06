@@ -3,6 +3,8 @@ __pycache__/
 *.pyc
 *.pyo
 build_*/
+build/
+*.spec
 dist/
 
 # 已构建的可执行文件（使用 build_exe.py 自行生成）

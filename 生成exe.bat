@@ -34,9 +34,9 @@ if not "%BUILDERR%"=="0" (
   pause
   exit /b %BUILDERR%
 )
-echo [OK] 已生成：%CD%\漏洞扫描器.exe
+echo [OK] 已生成：%CD%\dist\漏洞扫描器.exe
 echo      图形界面主程序，双击后打开应用窗口，在窗口内执行扫描并查看历次记录。
-echo      命令行版（可选）：%CD%\漏洞扫描器-命令行版.exe
+echo      命令行版（可选）：%CD%\dist\漏洞扫描器-命令行版.exe
 echo      报告和扫描历史保存在 %CD%\reports
 echo.
 pause
@@ -58,7 +58,10 @@ for /d %%d in ("%LOCALAPPDATA%\Programs\Python\Python3*") do (
 for /d %%d in ("C:\Program Files\Python3*") do (
   if exist "%%d\python.exe" if not defined PYCMD call :tryexe "%%d\python.exe"
 )
-for /d %%d in ("C:\Python3*") do (
+for /d %%d in ("D:\Program Files\Python*") do (
+  if exist "%%d\python.exe" if not defined PYCMD call :tryexe "%%d\python.exe"
+)
+for /d %%d in ("D:\Program Files\Python\Python3*") do (
   if exist "%%d\python.exe" if not defined PYCMD call :tryexe "%%d\python.exe"
 )
 exit /b 0
@@ -72,10 +75,31 @@ if "%PYTEST%"=="1" set "PYCMD=%~1"
 exit /b 0
 
 :nopy
+if exist "%~dp0漏洞扫描器.exe" (
+  echo 未检测到系统 Python，无法重新生成 exe。
+  echo 但已存在已打包的「漏洞扫描器.exe」，可直接双击使用（无需 Python）。
+  echo.
+  pause
+  exit /b 0
+)
+if exist "%~dp0dist\漏洞扫描器.exe" (
+  echo 未检测到系统 Python，无法重新生成 exe。
+  echo 但已存在已打包的「漏洞扫描器.exe」（在 dist 目录），可直接双击使用（无需 Python）。
+  echo.
+  pause
+  exit /b 0
+)
+if exist "%~dp0dist\VulnScanner.exe" (
+  echo 未检测到系统 Python，无法重新生成 exe。
+  echo 但已存在已打包的「VulnScanner.exe」（在 dist 目录），可直接双击使用（无需 Python）。
+  echo.
+  pause
+  exit /b 0
+)
 echo.
-echo [ERROR] 未找到可用的 Python 3 解释器。
-echo 请安装 Python 3.8+（https://www.python.org/downloads/），
-echo 安装时勾选 "Add python.exe to PATH"，然后重新双击本文件。
+echo [ERROR] 未找到可用的 Python 3 解释器，无法重新生成 exe。
+echo 请安装 Python 3.8+（https://www.python.org/downloads/，勾选 "Add python.exe to PATH"），
+echo 或直接使用同目录已有的「漏洞扫描器.exe」（双击即可，无需 Python）。
 echo.
 pause
 exit /b 1
