@@ -18,10 +18,36 @@
 
 > 所有探针均为**只读、非破坏性**请求，不会写入、修改或删除目标数据；不做任何漏洞利用。
 
+## 快速开始
+
+**方式 A（最省事，推荐）：直接用打包好的 exe**
+
+1. 进入仓库 `dist/` 目录
+2. 双击 **`漏洞扫描器.exe`** —— 打开图形界面窗口，填目标 → 开始扫描，报告详情在窗口内查看
+3. 命令行 / 脚本调用可选：**`漏洞扫描器-命令行版.exe <目标>`**
+
+> exe 已内嵌 Tcl/Tk 与全部依赖，**无需安装 Python**、无需联网。
+
+**方式 B：自己重新打包**
+
+1. 确保机器上有 Python 3.8+（图形界面版还需 tkinter）和 PyInstaller（`生成exe.bat` 会自动装 PyInstaller）
+2. 双击 **`生成exe.bat`**（或在项目根目录执行 `python build_exe.py`）
+3. 产物生成到 `dist/`：`漏洞扫描器.exe`（图形界面）+ `漏洞扫描器-命令行版.exe`（命令行）
+   - 只想生成图形界面版（更快）：`python build_exe.py --gui-only`
+
+**方式 C：源码直接运行（需要 Python 3.8+，图形界面还需 tkinter）**
+
+```bash
+python scan.py 192.168.1.10          # 命令行全扫
+python scan_gui.py                   # 打开图形界面
+```
+
+> 图形界面无 cmd 黑窗口；命令行版与 `scan.py` 参数完全一致。更多用法见下文。
+
 ## 环境要求
 
 - 运行 **`漏洞扫描器.exe`**（图形界面主程序）：无需 Python、无需任何依赖，双击打开应用窗口
-- 运行 `scan_gui.py` / `双击运行.bat`：Python 3.8+ 且包含 tkinter（仅用标准库，无需 pip install）
+- 运行 `scan_gui.py`（图形界面源码方式）：Python 3.8+ 且包含 tkinter（仅用标准库，无需 pip install）
 - 运行 `scan.py` / `漏洞扫描器-命令行版.exe`：命令行方式（同样只用标准库）
 - 生成 exe 时：Python 3.8+ 与 PyInstaller（构建脚本会自动安装）
 - 可选：`nmap` 已安装时会自动调用 `nmap -O` 增强远端操作系统识别
@@ -34,7 +60,7 @@
 
 ### 生成 exe（只需一次）
 
-> 项目目录已附带构建好的 **`漏洞扫描器.exe`**，可直接双击使用；
+> 仓库 `dist/` 目录已附带构建好的 **`漏洞扫描器.exe`**，可直接双击使用；
 > 只有在修改过源码、或需要用其他 Python 版本重新打包时才需要执行下面的步骤。
 
 双击 **`生成exe.bat`**（或在命令行执行 `python build_exe.py`）。脚本会自动检查/安装
@@ -46,7 +72,7 @@ PyInstaller，并生成：
 | `漏洞扫描器-命令行版.exe` | `--console` / `scan_exe.py` | 可选：脚本、定时任务、需要命令行参数时使用 |
 
 只想生成图形界面版（更快）：`python build_exe.py --gui-only`。
-PyInstaller 原始输出在 `dist/VulnScanner.exe` 与 `dist/VulnScannerCLI.exe`。
+PyInstaller 中间产物名为 `VulnScanner` / `VulnScannerCLI`，最终对外产物为 `dist/漏洞扫描器.exe` 与 `dist/漏洞扫描器-命令行版.exe`。
 
 ### 窗口里怎么用
 
@@ -95,9 +121,8 @@ PyInstaller 原始输出在 `dist/VulnScanner.exe` 与 `dist/VulnScannerCLI.exe`
 > `java -version`、`node --version`、`nmap` 等本地采集命令带 `CREATE_NO_WINDOW`，
 > 所以扫描过程中也不会闪出 cmd 黑窗口。
 
-源码方式同样可以打开图形界面：双击 **`双击运行.bat`**（用 `pythonw.exe` 启动
-`scan_gui.py`），或执行 `python scan_gui.py`。支持 `--target 1.2.3.4` 预填目标、
-`--scan` 启动后自动开始扫描。
+源码方式同样可以打开图形界面：执行 `python scan_gui.py`（或 `pythonw scan_gui.py`
+不弹控制台窗口）。支持 `--target 1.2.3.4` 预填目标、`--scan` 启动后自动开始扫描。
 
 ### 命令行版（可选）
 
@@ -167,9 +192,8 @@ PyInstaller 原始输出在 `dist/VulnScanner.exe` 与 `dist/VulnScannerCLI.exe`
 
 > 推荐直接双击 **`漏洞扫描器.exe`**（无需 Python）；用法见上一节「图形界面」。
 
-源码方式：双击 **`双击运行.bat`**（用 `pythonw.exe` 启动 `scan_gui.py`），
-或执行 `python scan_gui.py`，打开的是同一个应用窗口，不会弹出 cmd 黑窗口。
-启动器会自动查找 Python 并跳过 Microsoft Store 的占位程序；本机没有 Python 时会给出提示。
+源码方式：执行 `python scan_gui.py`（或 `pythonw scan_gui.py` 不弹控制台窗口），
+打开的是同一个应用窗口，不会弹出 cmd 黑窗口。需要 Python 3.8+ 且包含 tkinter。
 
 ### 方式二：命令行
 
